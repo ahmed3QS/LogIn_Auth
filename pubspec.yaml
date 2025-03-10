@@ -1,0 +1,35 @@
+name: ahmed
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  lottie: ^2.2.0
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.16.0
+  fluttertoast: ^8.2.1
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/walking_person.json
+    - assets/fonts/Changa-VariableFont_wght.ttf
+
+  fonts:
+    - family: Changa
+      fonts:
+        - asset: assets/fonts/Changa-VariableFont_wght.ttf
