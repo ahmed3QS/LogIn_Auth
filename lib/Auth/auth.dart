@@ -1,56 +1,75 @@
+import 'package:ahmed/home/home_page.dart';
+import 'package:ahmed/loginfrompage.dart';
+import 'package:ahmed/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class Auth {
-  // دالة لتسجيل مستخدم جديد
-  Future<void> signup({
-    required String email, // البريد الإلكتروني للمستخدم
-    required String password, // كلمة المرور للمستخدم
-    required String name, // كلمة المرور للمستخدم
-  }) async {
+  Future<void> signup(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
     try {
-      // محاولة تسجيل المستخدم باستخدام Firebase Authentication
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      // إظهار رسالة نجاح
-      Fluttertoast.showToast(
-          msg: 'Account created successfully!',
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 14.0);
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      await Future.delayed(const Duration(seconds: 1));
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const HomePage()));
     } on FirebaseAuthException catch (e) {
-      // معالجة الأخطاء المتوقعة
       String message = '';
       if (e.code == 'weak-password') {
-        message = 'The password provided is too weak';
+        message = 'The password provided is too weak.';
       } else if (e.code == 'email-already-in-use') {
-        message = 'An account already exists with that email';
-      } else if (e.code == 'name-already-in-use') {
-        message = 'An Name already exists with that Name';
-      } else {
-        message = 'An unexpected error occurred. Please try again.';
+        message = 'An account already exists with that email.';
       }
       Fluttertoast.showToast(
-          msg: message,
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.black54,
-          textColor: Colors.white,
-          fontSize: 14.0);
-    } catch (e) {
-      // معالجة الأخطاء غير المتوقعة
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+    } catch (e) {}
+  }
+
+  Future<void> signin(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+
+      await Future.delayed(const Duration(seconds: 1));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (BuildContext context) => MyApp()));
+    } on FirebaseAuthException catch (e) {
+      String message = '';
+      if (e.code == 'invalid-email') {
+        message = 'No user found for that email.';
+      } else if (e.code == 'invalid-credential') {
+        message = 'Wrong password provided for that user.';
+      }
       Fluttertoast.showToast(
-          msg: 'An error occurred: $e',
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 14.0);
-    }
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+    } catch (e) {}
+  }
+
+  Future<void> signout({required BuildContext context}) async {
+    await FirebaseAuth.instance.signOut();
+    await Future.delayed(const Duration(seconds: 1));
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (BuildContext context) => LoginFormPage()));
   }
 }

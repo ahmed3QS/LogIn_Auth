@@ -8,7 +8,6 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword =
@@ -34,7 +33,6 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             // حقل إدخال الاسم مع أيقونة
             TextField(
-              controller: _nameController,
               keyboardType: TextInputType.name,
               decoration: InputDecoration(
                 labelText: "الاسم الكامل",
@@ -85,10 +83,9 @@ class _SignUpPageState extends State<SignUpPage> {
             ElevatedButton(
               onPressed: () async {
                 await Auth().signup(
-                  email: _emailController.text,
-                  password: _passwordController.text,
-                  name: _nameController.text,
-                );
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                    context: context);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.lightBlue,

@@ -1,3 +1,4 @@
+import 'package:ahmed/Auth/auth.dart';
 import 'package:ahmed/forgot_password_page.dart';
 import 'package:flutter/material.dart';
 import 'sign_up_page.dart'; // استدعاء صفحة التسجيل الجديد
@@ -53,7 +54,12 @@ class LoginFormPage extends StatelessWidget {
             SizedBox(height: 20),
             // زر تسجيل الدخول
             ElevatedButton(
-              onPressed: () async {},
+              onPressed: () async {
+                await Auth().signin(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                    context: context);
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.lightBlue,
                 minimumSize: Size(double.infinity, 50),
